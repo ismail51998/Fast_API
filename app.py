@@ -2,9 +2,11 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 import uvicorn
+from fastapi.templating import Jinja2Templates
 from regression_model import predict
 import pandas as pd
 app = FastAPI()
+templates = Jinja2Templates(directory="templates")
 class House(BaseModel): 
 	Id: int
 	MSSubClass: int
@@ -87,8 +89,8 @@ class House(BaseModel):
 	SaleType: str
 	SaleCondition: str
 @app.get("/") 
-def home():
-	return {'ML model for test prediction'} 
+def home(request:Request):
+	return templates.TemplateResponse("index.html",{"request": request})
 @app.post('/make_predictions')
 async def make_predictions(house:House):
     house_dict=house.__dict__
