@@ -1,13 +1,10 @@
-from fastapi import FastAPI 
-from pydantic import BaseModel 
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from pydantic import BaseModel
 import uvicorn
-app = FastAPI()
-from sklearn.linear_model import LogisticRegression 
-import pandas as pd 
-import pickle #we are loading the model using pickle 
-import regression_model
 from regression_model import predict
-import numpy as np
+import pandas as pd
+app = FastAPI()
 class House(BaseModel): 
 	Id: int
 	MSSubClass: int
@@ -91,7 +88,6 @@ class House(BaseModel):
 	SaleCondition: str
 @app.get("/") 
 def home():
-	print("hhhhhhhhhhhhhhhhhhhh")
 	return {'ML model for test prediction'} 
 @app.post('/make_predictions')
 async def make_predictions(house:House):
