@@ -5,6 +5,7 @@ import uvicorn
 from fastapi.templating import Jinja2Templates
 from regression_model import predict
 import pandas as pd
+import numpy as np
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 class House(BaseModel): 
@@ -96,6 +97,6 @@ async def make_predictions(house:House):
     house_dict=house.__dict__
     house_df = pd.DataFrame(house_dict, index=[0])
     house_df=house_df.replace('nan',np.nan)
-    return(regression_model.predict.make_prediction(input_data=house_df))
+    return(predict.make_prediction(input_data=house_df))
 if __name__ == "__main__": 
 	uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
